@@ -1,0 +1,25 @@
+{
+  "name": "@yto/custom",
+  "version": "0.0.3",
+  "type": "module",
+  "main": "dist/es/index.js",
+  "module": "dist/es/index.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "pnpm clean && vue-tsc && vite build"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.7",
+    "lodash-es": "^4.17.21",
+    "rollup-plugin-visualizer": "^5.9.0",
+    "vite-plugin-dts": "^2.2.0",
+    "vite-plugin-vue-setup-extend": "^0.4.0"
+  },
+  "dependencies": {
+    "echarts": "^5.4.2",
+    "immutable": "^4.3.0"
+  }
+}
