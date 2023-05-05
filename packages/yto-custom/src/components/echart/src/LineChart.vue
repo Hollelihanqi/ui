@@ -3,13 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue'
+import { computed } from "vue";
 import BaseEchart from "./BaseChart.vue";
 import { Map } from "immutable";
 import { getLineChartConfig } from "./common/chartConfig";
-import { getOptiops } from './common/util';
-import echartsComposable from './common/echartsComposable'
-import { isEmpty, isArray } from "lodash-es";
+import { getOptiops } from "./common/util";
+import echartsComposable from "./common/echartsComposable";
+import { isEmpty } from "@yto/utils";
 
 interface Props {
   options?: any;
@@ -19,11 +19,9 @@ const props = withDefaults(defineProps<Props>(), {
     return {};
   },
 });
-const chartRef = ref()
+const chartRef = ref();
 const chartOptions = computed(() => {
-  const options = getOptiops(
-    Map(getLineChartConfig()).mergeDeep(props.options)
-  );
+  const options = getOptiops(Map(getLineChartConfig()).mergeDeep(props.options));
   return dealNodata(options);
 });
 /**
@@ -32,7 +30,10 @@ const chartOptions = computed(() => {
  * @return {*}
  */
 const dealNodata = (options: any) => {
-  if (isEmpty(options.series) || (isArray(options.series) && options.series.every((item:any) => isEmpty(item.data))) ){
+  if (
+    isEmpty(options.series) ||
+    (Array.isArray(options.series) && options.series.every((item: any) => isEmpty(item.data)))
+  ) {
     options.title.show = true;
     options.yAxis.show = false;
     options.xAxis.show = false;
@@ -41,16 +42,12 @@ const dealNodata = (options: any) => {
   }
   return options;
 };
-// echartsComposable(chartRef)
-const getEchartInstance = () => {
-  console.log('lineChart-getEchartInstance', chartRef)
-  chartRef && unref(chartRef).getEchartInstance()
-}
+const { getEchartInstance } = echartsComposable(chartRef);
 
 defineExpose({
   //对外暴露echart对象
-  getEchartInstance
-})
+  getEchartInstance,
+});
 </script>
 <style lang="scss" scoped>
 .wrapper {

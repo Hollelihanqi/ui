@@ -1,10 +1,9 @@
-import _YtoProTable from './src/index.vue'
+import ProTable from "./src/index.vue";
 
-import { install } from '../../_utils'
+import { install } from "../../_utils";
 
-export const YtoProTable = install(_YtoProTable)
+export const YtoProTable = install(ProTable);
 
-/** alert 组件实例类型 */
-export type YtoProTableInstance = InstanceType<typeof YtoProTable>
+export type { ProTableInstance } from "./src/instance";
 
-export default YtoProTable
+export default YtoProTable;

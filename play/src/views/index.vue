@@ -1,17 +1,16 @@
 <template>
-    <yto-table :columns="columns" :tableData="tableData"  style="padding:30px 16px;">
-        <template #callStatus="scope">
-            <span>{{ scope.row.status }}</span>
-        </template>
-    </yto-table>
+  <yto-table :columns="columns" :table-data="tableData" style="padding: 30px 16px">
+    <template #callStatus="scope">
+      <span>{{ scope.row.status }}</span>
+    </template>
+  </yto-table>
 </template>
 <script lang="ts" setup>
-
 const columns = [
   {
     label: "序号",
     type: "index",
-    width:80
+    width: 80,
   },
   {
     label: "调用方编码",
@@ -36,19 +35,19 @@ const columns = [
 ];
 
 const tableData = [
-    {
-        callerCode: "YTO-5464564",
-        callerName: "CALL-NAME",
-        ownerStr: "LIHANQI",
-        status: '已调用',
-        lastCallTime:"2023.01.10"
-    },
-    {
-        callerCode: "YTO-5464564",
-        callerName: "CALL-NAME",
-        ownerStr: "LIHANQI",
-        status: '已调用',
-        lastCallTime:"2023.01.10"
-    },
-]
+  {
+    callerCode: "YTO-5464564",
+    callerName: "CALL-NAME",
+    ownerStr: "LIHANQI",
+    status: "已调用",
+    lastCallTime: "2023.01.10",
+  },
+  {
+    callerCode: "YTO-5464564",
+    callerName: "CALL-NAME",
+    ownerStr: "LIHANQI",
+    status: "已调用",
+    lastCallTime: "2023.01.10",
+  },
+];
 </script>

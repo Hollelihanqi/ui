@@ -7,6 +7,7 @@
 ```shell
 pnpm add --save-dev @yto/custom
 ```
+
 ## 完整引入
 
 在 `main.ts` 中引入下面内容
@@ -16,7 +17,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 import YtoCustom from "@yto/custom";
-import "@yto/custom/dist/style.css";
+import "@yto/custom/dist/es/style.css";
 
 createApp(App).use(YtoCustom).mount("#app");
 ```

@@ -1,5 +1,4 @@
-
-import { isFunction } from "lodash-es";
+import { isFunction } from "@yto/utils";
 /**
  * @description: 将MapOptions转换为options
  * @param {any} options

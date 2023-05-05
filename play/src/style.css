@@ -5,11 +5,14 @@
 }
 
 html,
-body{
+body {
   overflow: hidden;
+  height: 100%;
 }
 #app {
   width: 100vw;
+  height: 100%;
+  overflow: auto;
 }
 
 @media (prefers-color-scheme: light) {

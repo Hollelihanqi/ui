@@ -1,7 +1,7 @@
 <script lang="ts">
-import { ref, reactive, defineComponent, h, onMounted, watch ,PropType} from "vue";
+import { ref, reactive, defineComponent, h, onMounted, watch, PropType } from "vue";
 import { useRouter, onBeforeRouteUpdate } from "vue-router";
-import { ElMenu, ElMenuItem, ElSubMenu,ElButton } from 'element-plus'
+import { ElMenu, ElMenuItem, ElSubMenu, ElButton } from "element-plus";
 
 interface MenuProps {
   name: string;
@@ -14,6 +14,7 @@ interface AnyProps {
   [propsName: string]: any;
 }
 export default defineComponent({
+  name: "CMenu",
   props: {
     menus: {
       type: Array as PropType<MenuProps[]>,
@@ -101,10 +102,10 @@ export default defineComponent({
           {
             class: "m-yto-menu",
             ref: sytoMenu,
-            'on-open': (key: string, keyPath: string) => {
+            "on-open": (key: string, keyPath: string) => {
               handleOpen(key, keyPath);
             },
-            'on-close': (key: string, keyPath: string) => {
+            "on-close": (key: string, keyPath: string) => {
               handleClose(key, keyPath);
             },
             uniqueOpened: true,
@@ -114,19 +115,23 @@ export default defineComponent({
           },
           [renderChildrenNode(props.menus)]
         ),
-        h("div", {
-          class: "collapse-btn"
-        }, [
-          h("i", {
-            class: "yto-icon-s-fold",
-            size: 22,
-            onClick: () => (isCollapse.value = !isCollapse.value),
-          }),
-        ]),
+        h(
+          "div",
+          {
+            class: "collapse-btn",
+          },
+          [
+            h("i", {
+              class: "yto-icon-s-fold",
+              size: 22,
+              onClick: () => (isCollapse.value = !isCollapse.value),
+            }),
+          ]
+        ),
       ];
     };
     onMounted(() => {
-      defaultActive.value = location.pathname
+      defaultActive.value = location.pathname;
     });
     watch(
       () => props.menus,
@@ -136,13 +141,13 @@ export default defineComponent({
       { immediate: true, deep: true }
     );
     return () => {
-        return h(
-            "div",
-            {
-                class: "yt-menu-w",
-            },
-            renderMenu()
-        );
+      return h(
+        "div",
+        {
+          class: "yt-menu-w",
+        },
+        renderMenu()
+      );
     };
   },
 });
@@ -244,7 +249,7 @@ export default defineComponent({
 .my-menu-item-title {
   display: flex;
 
-  &>i {
+  & > i {
     padding-right: 10px;
   }
 }

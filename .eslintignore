@@ -1,0 +1,9 @@
+*.sh
+node_modules
+dist
+pnpm-lock.yaml
+vite.config.ts
+commitlint.config.cjs
+.eslintrc.cjs
+.prettierrc.cjs
+.eslintcache

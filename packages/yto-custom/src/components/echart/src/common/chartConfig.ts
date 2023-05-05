@@ -1,4 +1,3 @@
-
 /***************线图的基础配置----start*****************/
 export const getLineChartConfig = () => {
   return {
@@ -20,7 +19,7 @@ export const getLineChartConfig = () => {
       backgroundColor: "rgba(0, 0, 0, 0.75)",
       textStyle: {
         fontSize: 14,
-        color: "#999",
+        color: "#fff",
       },
       axisPointer: {
         type: "line",
@@ -63,10 +62,9 @@ export const getLineChartConfig = () => {
       },
     },
     series: [],
-  }
-}
+  };
+};
 /***************线图的基础配置----end*****************/
-
 
 /***************柱状图基础配置----start*****************/
 export const getBarChartBaseOptions = () => {
@@ -109,7 +107,7 @@ export const getBarChartBaseOptions = () => {
           color: "#D9D9D9",
         },
       },
-      data: []
+      data: [],
     },
     yAxis: {
       show: true,
@@ -132,8 +130,8 @@ export const getBarChartBaseOptions = () => {
       data: [],
     },
     series: [],
-  }
-}
+  };
+};
 
 /***************柱状图基础配置----end*****************/
 
@@ -141,21 +139,20 @@ export const getBarChartBaseOptions = () => {
 export const getPieChartBaseOptions = () => {
   return {
     title: {
-      text: '',
-      left: 'center',
+      text: "",
+      left: "center",
       top: 10,
     },
     tooltip: {
-      trigger: 'item'
+      trigger: "item",
     },
     legend: {
       top: "5%",
-      orient: 'vertical',
-      left: 'left'
+      orient: "vertical",
+      left: "left",
     },
-    series: []
-  }
-}
+    series: [],
+  };
+};
 
 /***************饼图基础配置----end*****************/
-

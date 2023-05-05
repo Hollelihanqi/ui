@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "docs:dev": "vitepress dev --port 1167",
     "docs:build": "vitepress build",
-    "docs:server": "vitepress serve"
+    "docs:server": "vitepress serve",
+    "docs:preview": "vitepress preview docs --port 8963"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +16,7 @@
   "devDependencies": {
     "@ruabick/md-demo-plugins": "^0.3.1",
     "@ruabick/vitepress-demo-block": "^0.3.1",
-    "vitepress": "1.0.0-alpha.61"
+    "vitepress": "1.0.0-alpha.74"
   },
   "dependencies": {
     "@vitejs/plugin-vue-jsx": "^3.0.1",

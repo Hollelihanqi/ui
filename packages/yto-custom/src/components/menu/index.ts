@@ -1,10 +1,9 @@
-import _YtoMenu from './src/index.vue'
+import Menu from "./src/index.vue";
 
-import { install } from '../../_utils'
+import { install } from "../../_utils";
 
-export const YtoMenu = install(_YtoMenu)
+export const YtoMenu = install(Menu);
 
-/** alert 组件实例类型 */
-export type YtoMenuInstance = InstanceType<typeof YtoMenu>
+export type { MenuInstance } from "./src/instance";
 
-export default YtoMenu
+export default YtoMenu;

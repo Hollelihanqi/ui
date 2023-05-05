@@ -14,7 +14,7 @@ export default defineComponent({
   setup(props, { slots, attrs }) {
     return () => {
       return h(BaseSelect, {
-        placeholder:"请输入",
+        placeholder: "请输入",
         ...attrs,
       });
     };

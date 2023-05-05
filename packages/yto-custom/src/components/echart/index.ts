@@ -1,10 +1,9 @@
-import _YtoEchart from './src/index.vue'
+import Echart from "./src/index.vue";
 
-import { install } from '../../_utils'
+import { install } from "../../_utils";
 
-export const YtoEchart = install(_YtoEchart)
+export const YtoEchart = install(Echart);
 
-/** alert 组件实例类型 */
-export type YtoEchartInstance = InstanceType<typeof YtoEchart>
+export type { EchartInstance } from "./src/instance";
 
-export default YtoEchart
+export default YtoEchart;

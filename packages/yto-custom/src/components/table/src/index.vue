@@ -3,37 +3,20 @@
     <div class="table-w">
       <el-table
         ref="tableRef"
-        :data="tableData"
+        :data="!requestApi ? tableData : list"
         style="width: 100%"
         class="my-table"
         header-cell-class-name="my-header-cell"
         v-bind="$attrs"
       >
         <template v-for="(item, index) in columns" :key="index">
-          <el-table-column
-            v-if="item.hideCell"
-            show-overflow-tooltip
-            v-bind="item"
-          />
+          <el-table-column v-if="item.hideCell" show-overflow-tooltip v-bind="item" />
           <el-table-column v-if="item.type" v-bind="item" />
-          <el-table-column
-            v-if="!item.hideCell && !item.type"
-            show-overflow-tooltip
-            v-bind="item"
-          >
+          <el-table-column v-if="!item.hideCell && !item.type" show-overflow-tooltip v-bind="item">
             <template #default="scope">
-              <slot
-                v-if="item.slot"
-                :name="item.slot"
-                :index="scope.$index"
-                :row="scope.row"
-              ></slot>
-              <template v-else-if="item.formatText">{{
-                item.formatText(scope.row)
-              }}</template>
-              <template v-else>{{
-                item.prop && scope.row[item.prop]
-              }}</template>
+              <slot v-if="item.slot" :name="item.slot" :index="scope.$index" :row="scope.row" v-bind="scope"></slot>
+              <template v-else-if="item.formatText">{{ item.formatText(scope.row) }}</template>
+              <template v-else>{{ item.prop && scope.row[item.prop] }}</template>
             </template>
           </el-table-column>
         </template>
@@ -42,10 +25,10 @@
         v-if="!paginationHide"
         class="my-pagination"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+        :total="!requestApi ? total : listTotal"
         :page-sizes="pageSizes"
-        :page-size="pageSize"
-        :current-page="currentPage"
+        :page-size="!requestApi ? pageSize : paginationParams.pageSize"
+        :current-page="!requestApi ? currentPage : paginationParams.currentPage"
         @size-change="handleSizeChange"
         @current-change="handleTableChange"
       ></el-pagination>
@@ -53,92 +36,143 @@
   </ElConfigProvider>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ExtractPropTypes } from "vue";
 import { ElConfigProvider } from "element-plus";
-// @ts-ignore
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 
 export interface ColumnsItemProps {
   [propsName: string]: any;
 }
 
+const props = {
+  tableData: {
+    type: Array,
+    default: () => [],
+  },
+  columns: {
+    type: Array as PropType<ColumnsItemProps[]>,
+    default: () => [],
+    required: true,
+  },
+  paginationHide: {
+    // 是否隐藏分页组件
+    type: Boolean,
+    default: false,
+  },
+  total: {
+    type: Number,
+    default: 0,
+  },
+  pageSizes: {
+    type: Array as PropType<number[]>,
+    default: () => [10, 30, 50, 100],
+  },
+  pageSize: {
+    type: Number,
+    default: 10,
+  },
+  currentPage: {
+    type: Number,
+    default: 1,
+  },
+  currentPageField: {
+    type: String,
+    default: "page",
+  },
+  pageSizeField: {
+    type: String,
+    default: "size",
+  },
+  handleChange: {
+    type: Function,
+    default: null,
+  },
+  requestApi: {
+    type: Function,
+    default: null,
+  },
+  requestAuto: {
+    type: Boolean,
+    default: true,
+  },
+  dataCallback: {
+    type: Function,
+    default: null,
+  },
+  otherParams: {
+    type: Object,
+    default: () => ({}),
+  },
+};
+type Props = ExtractPropTypes<typeof props>;
+
 export default defineComponent({
+  name: "CTable",
   components: {
     ElConfigProvider,
   },
-  directives: {
-    loading: {
-      // 指令的定义
-      mounted(el: HTMLElement) {
-        console.log(el.querySelector(".el-table__empty-text"));
-      },
-    },
-    hoverTip: {
-      // 指令的定义
-      mounted(el: HTMLElement) {
-        console.log(el);
-      },
-    },
-  },
-  props: {
-    tableData: {
-      type: Array,
-      default: () => [],
-      required: true,
-    },
-    columns: {
-      type: Array as PropType<ColumnsItemProps[]>,
-      default: () => [],
-      required: true,
-    },
-    paginationHide: {
-      // 是否隐藏分页组件
-      type: Boolean,
-      default: false,
-    },
-    total: {
-      type: Number,
-      default: 0,
-    },
-    pageSizes: {
-      type: Array as PropType<number[]>,
-      default: () => [10, 30, 50, 100],
-    },
-    pageSize: {
-      type: Number,
-      default: 10,
-    },
-    currentPage: {
-      type: Number,
-      default: 1,
-    },
-    handleChange: {
-      type: Function,
-      default: null,
-    },
-  },
-
-  setup(props) {
+  props,
+  setup(props: Props) {
     const tableRef = ref();
-    const load = () => {};
+    const list = ref([]);
+    const listTotal = ref(0);
+    const paginationParams = ref({
+      currentPage: 1,
+      pageSize: props.pageSize,
+    });
+    const getTableData = async () => {
+      let result = await props.requestApi({
+        ...props.otherParams,
+        [props.currentPageField]: paginationParams.value.currentPage,
+        [props.pageSizeField]: paginationParams.value.pageSize,
+      });
+      if (props.dataCallback && typeof props.dataCallback === "function") {
+        result = props.dataCallback(result);
+      }
+      list.value = result.items;
+      listTotal.value = result.total;
+    };
     const handleTableChange = (num: number) => {
-      if (props.handleChange && typeof props.handleChange === "function") {
+      if (!props.requestApi && props.handleChange && typeof props.handleChange === "function") {
         props.handleChange("page", num);
+      } else {
+        paginationParams.value.currentPage = num;
+        getTableData();
       }
     };
     const handleSizeChange = (val: number): void => {
-      if (props.handleChange && typeof props.handleChange === "function") {
+      if (!props.requestApi && props.handleChange && typeof props.handleChange === "function") {
         props.handleChange("size", val);
+      } else {
+        paginationParams.value.pageSize = val;
+        getTableData();
       }
     };
     const tableClearSelection = () => {
       tableRef.value.clearSelection();
     };
+    const updateTableData = () => {
+      getTableData();
+    };
+    const resetTableData = () => {
+      paginationParams.value.currentPage = 1;
+      paginationParams.value.pageSize = props.pageSize;
+      getTableData();
+    };
+    onMounted(() => {
+      if (props.requestApi && props.requestAuto && typeof props.requestApi === "function") {
+        getTableData();
+      }
+    });
     return {
+      list,
+      listTotal,
+      paginationParams,
       handleTableChange,
       handleSizeChange,
-      load,
       tableClearSelection,
+      updateTableData,
+      resetTableData,
       tableRef,
       locale: zhCn,
     };
@@ -174,6 +208,9 @@ export default defineComponent({
 
 .my-pagination :deep(.el-pagination__jump) {
   margin-left: 16px;
+}
+.my-pagination :deep(.el-pagination__sizes) {
+  margin-right: 16px;
 }
 
 :deep(.el-input__inner) {
@@ -239,5 +276,8 @@ export default defineComponent({
   line-height: 36px;
   vertical-align: top;
   box-sizing: border-box;
+}
+:deep(.el-pagination span:not([class*="suffix"])) {
+  align-items: center;
 }
 </style>

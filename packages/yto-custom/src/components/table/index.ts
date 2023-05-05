@@ -1,10 +1,9 @@
-import _YtoTable from './src/index.vue'
+import Table from "./src/index.vue";
 
-import { install } from '../../_utils'
+import { install } from "../../_utils";
 
-export const YtoTable = install(_YtoTable)
+export const YtoTable = install(Table);
 
-/** alert 组件实例类型 */
-export type YtoTableInstance = InstanceType<typeof YtoTable>
+export type { TableInstance } from "./src/instance";
 
-export default YtoTable
+export default YtoTable;
